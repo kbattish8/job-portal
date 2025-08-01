@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h1>Sign up</h1>
+    <form id="Signupform">
+        <input type="text" name="username" id="username" placeholder="username" required> <br>
+        <input type="email" name="email" id="email" placeholder="email" required> <br>
+        <input type="password" id="password" placeholder="Password" required /><br/>
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <script>
+        document.getElementById('Signupform').addEventListner("submit", funtion(e){
+            e.preventDefault();
+
+            fetch("http://127.0.0.1:8000/api/register/"){
+                method: "POST",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body:JSON.Stringify({
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value, 
+                }).then(res => res.json())
+                .then(data => {
+                    console.log("Token:", data.token);
+                    alert("Login successful!");
+                    localStorage.setItem("token", data.token); // store token for future use
+                })
+                .catch(err => console.error("Login failed:", err));
+            }
+
+        });
+    </script>
+
+
+</body>
+</html>
